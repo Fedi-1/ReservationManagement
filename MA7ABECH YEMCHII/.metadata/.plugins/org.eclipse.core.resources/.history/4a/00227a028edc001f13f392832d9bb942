@@ -1,0 +1,83 @@
+package com.example.demo.services;
+
+import com.example.demo.models.Client;
+import com.example.demo.models.User;
+import com.example.demo.repositories.ClientRepository;
+import com.example.demo.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    // Create a new user
+    @Transactional
+    public User createUser(User user) {
+        // Save user first
+        User savedUser = userRepository.save(user);
+        
+        // If user is a client, create client record using JPA
+        if ("client".equalsIgnoreCase(user.getRole())) {
+            Client client = new Client();
+            client.setIdUserCorres(savedUser.getIdUser());
+            client.setAdresse(savedUser.getAdresseUser());
+            client.setTel(savedUser.getTelUser());
+            
+            // Save client using repository
+            clientRepository.save(client);
+        }
+        
+        return savedUser;
+    }
+
+    // Retrieve all users
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    // Retrieve a user by ID
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    // Update an existing user
+    public User updateUser(User user) {
+        return userRepository.save(user);
+    }
+
+    // Delete a user by ID
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Optional<User> login(String email, String password) {
+        Optional<User> userOpt = userRepository.findByEmailUser(email);
+        if (userOpt.isPresent() && userOpt.get().getPasswordUser().equals(password)) {
+            User user = userOpt.get();
+            
+            // If the user is a client, fetch their client ID using JPA
+            if ("client".equalsIgnoreCase(user.getRole())) {
+                try {
+                    Optional<Client> client = clientRepository.findByIdUserCorres(user.getIdUser());
+                    client.ifPresent(c -> user.setClientId(c.getIdClient().intValue()));
+                } catch (Exception e) {
+                    System.err.println("Error fetching client ID: " + e.getMessage());
+                }
+            }
+            
+            return Optional.of(user);
+        }
+        return Optional.empty();
+    }
+}

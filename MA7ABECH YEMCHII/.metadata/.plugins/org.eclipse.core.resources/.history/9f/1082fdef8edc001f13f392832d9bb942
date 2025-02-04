@@ -1,0 +1,38 @@
+package com.example.demo.services;
+
+import com.example.demo.models.Client;
+import com.example.demo.models.User;
+import com.example.demo.repositories.ClientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class ClientService {
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Transactional
+    public Client createClient(Client client) {
+        // First create the user
+        User user = new User();
+        user.setRole("client");
+        user.setEmailUser(client.getEmail());
+        user.setNomUser(client.getNom());
+        user.setPasswordUser(client.getPassword());
+        user.setPrenomUser(client.getPrenom());
+        
+        // Save the user first
+        User savedUser = userService.createUser(user);
+        
+        // Set the user ID in client
+        client.setIdUserCorres(savedUser.getIdUser());
+        
+        // Now save the client
+        return clientRepository.save(client);
+    }
+}

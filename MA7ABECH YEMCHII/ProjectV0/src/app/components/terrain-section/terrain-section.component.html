@@ -1,0 +1,54 @@
+<section class="terrain-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Discover Our Sports Fields</h2>
+      <p class="section-subtitle">Find and book the perfect venue for your game</p>
+    </div>
+
+    <div class="slider-container">
+      <button class="nav-button prev" (click)="slidePrev()" [disabled]="currentIndex === 0">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+
+      <div class="terrain-slider">
+        <div class="slider-track" [ngStyle]="{ 'transform': 'translateX(' + (-currentIndex * 500) + 'px)' }">
+          <div *ngFor="let terrain of terrains" class="terrain-card">
+            <div class="card-image">
+              <img [src]="terrain.image_terrain" [alt]="terrain.name">
+              <div class="price-tag">{{terrain.prix_heur| number:'1.2-2'}}€<span>/hour</span></div>
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">{{terrain.name}}</h3>
+              <div class="card-category">
+                <i class="fas fa-tag"></i>
+                Sports Field
+              </div>
+              <div class="card-location">
+                <i class="fas fa-map-marker-alt"></i>
+                {{terrain.location || 'Location not specified'}}
+              </div>
+              <p class="card-description">{{terrain.desc_terrain}}</p>
+              <div class="card-footer">
+                <span class="status-badge" [class.available]="terrain.availability === 'available'" [class.maintenance]="terrain.availability === 'maintenance'">
+                  {{ terrain.availability === 'available' ? 'Available' : (terrain.availability === 'maintenance' ? 'Maintenance' : 'Not Available') }}
+                </span>
+                <div class="action-buttons">
+                  <button class="primary-button" (click)="openReservationForm(terrain)" [disabled]="terrain.availability !== 'available'">
+                    <i class="fas fa-calendar-plus"></i> Reserve
+                  </button>
+                  <button class="secondary-button" (click)="openRapportDialog(terrain)">
+                    <i class="fas fa-flag"></i> Report
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="nav-button next" (click)="slideNext()" [disabled]="currentIndex >= maxIndex">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</section>

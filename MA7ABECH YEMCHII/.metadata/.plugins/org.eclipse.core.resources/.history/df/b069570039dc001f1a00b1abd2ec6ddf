@@ -1,0 +1,132 @@
+package com.example.demo.models;
+
+import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@Entity	
+@Table(name = "user") 
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("idUser")
+    private Long idUser;
+
+    @Column(name = "prenom_user")
+    
+    private String prenomUser;
+
+    @Column(name = "password_user")
+    @JsonProperty("passwordUser")
+    private String passwordUser;
+
+    @Column(name = "email_user")
+    @JsonProperty("emailUser")
+    private String emailUser;
+
+    @Column(name = "nom_user")
+    @JsonProperty("nomUser")
+    private String nomUser;
+
+    @Column(name = "adresse_user")
+    @JsonProperty("adresseUser")
+    private String adresseUser;
+
+    @Column(name = "tel_user")
+    @JsonProperty("telUser")
+    private String telUser;
+
+    @Column(name = "role")
+    private String role;
+    
+    @Transient
+    private Integer clientId;
+
+    public User() {
+    }
+
+    public User(Long idUser, String prenomUser, String passwordUser, String emailUser, String nomUser, String adresseUser,
+            String telUser, String role) {
+        this.idUser = idUser;
+        this.prenomUser = prenomUser;
+        this.passwordUser = passwordUser;
+        this.emailUser = emailUser;
+        this.nomUser = nomUser;
+        this.adresseUser = adresseUser;
+        this.telUser = telUser;
+        this.role = role;
+    }
+
+    // Getters and Setters
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getPrenomUser() {
+        return prenomUser;
+    }
+
+    public void setPrenomUser(String prenomUser) {
+        this.prenomUser = prenomUser;
+    }
+
+    public String getPasswordUser() {
+        return passwordUser;
+    }
+
+    public void setPasswordUser(String passwordUser) {
+        this.passwordUser = passwordUser;
+    }
+
+    public String getEmailUser() {
+        return emailUser;
+    }
+
+    public void setEmailUser(String emailUser) {
+        this.emailUser = emailUser;
+    }
+
+    public String getNomUser() {
+        return nomUser;
+    }
+
+    public void setNomUser(String nomUser) {
+        this.nomUser = nomUser;
+    }
+
+    public String getAdresseUser() {
+        return adresseUser;
+    }
+
+    public void setAdresseUser(String adresseUser) {
+        this.adresseUser = adresseUser;
+    }
+
+    public String getTelUser() {
+        return telUser;
+    }
+
+    public void setTelUser(String telUser) {
+        this.telUser = telUser;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Integer getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
+}

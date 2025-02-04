@@ -1,0 +1,16 @@
+# Basic application name
+spring.application.name=FirstProject-3
+
+# DataSource configuration for MySQL
+spring.datasource.url=jdbc:mysql://localhost:3306/ps3000?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=
+
+# Hibernate settings
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+spring.jpa.properties.hibernate.format_sql=true
+
+# Server port
+server.port=8006
